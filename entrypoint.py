@@ -75,6 +75,8 @@ def collect_revs(repo, oldrev, newrev):
     while True:
         revs.append(rev)
         commit = commit.parents
+        if type(commit) == list:
+            commit = commit[0] # FIXME: handle multiple parents!
         rev = commit.sha
         if len(revs) > 100:
             print("warning:: file={}:: more than {} commits between '{}' and '{}'!\n"
