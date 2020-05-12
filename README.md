@@ -8,6 +8,9 @@ Will go here.
 ## Todo
 
 - Provide documentation beyond action.yml
+- Handle added or removed files.
+- Handle "missing newline at end of file"
+- Allow to customize max diff sizes, max commits.
 - Handle merge commits.
 - Handle multiple parent commits.
 - Use short commit sha.
