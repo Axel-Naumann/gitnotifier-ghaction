@@ -1,0 +1,122 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+div.gn-header{
+    padding: 0.5em 0.5em;
+    background-color: #fffadf;
+}
+td.gn-label {
+    min-width: 5em;
+}
+.gn-header table {
+    border-collapse: collapse;
+}
+.gn-header tr td {
+    padding: 0;
+}
+div.gn-title {
+    font-weight: bold;
+    padding-bottom: 0.3em;
+    margin-bottom: 0.3em;
+}
+div.gn-stat {
+    color: gray;
+    font-size: small;
+    margin: 0.5em 0em 1em;
+}
+table.gn-statfile td {
+    padding: 0 0.5em;
+}
+table.gn-statfile {
+    margin-bottom: 0.5em;
+}
+span.gn-statadd {
+    color: green;
+    background-color: lightgreen;
+    font-family: 'Source Code Pro', monospace;
+}
+span.gn-statrm {
+    color: red;
+    background-color: #fcc;
+    font-family: 'Source Code Pro', monospace;
+}
+div.gn-diff {
+    margin: 1em 0em
+}
+div.gn-filediff {
+    padding-left: 0.4em;
+    xborder-left: gray 0.2em dotted;
+}
+div.gn-filename {
+    font-family: 'Source Code Pro', monospace;
+    padding-top: 1em;
+    padding-left: 0.2em;
+}
+table.gn-hunk {
+    margin: 0.2em;
+    border-left: gray 1px solid;
+    border-top: gray 1px solid;
+    border-bottom: gray 1px solid;
+    border-spacing: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding: 5px 0 5px 0;
+}
+table.gn-hunk tr:first-child td:first-child {
+    border-top-left-radius: 5px;
+}
+table.gn-hunk tr:last-child td:first-child {
+    border-bottom-left-radius: 5px;
+}
+.gn-hunk tr {
+    height: 20px;
+}
+td.gn-slineno, td.gn-tlineno {
+    width: 2em;
+    color: gray;
+    font-size: small;
+    text-align: right;
+    padding: 0em 0.5em;
+}
+td.gn-linetype {
+    width:1em;
+    font-family: 'Source Code Pro', monospace;
+    font-size: smaller;
+}
+td.gn-lineplus {
+    color: darkgreen;
+    background-color: #efe;
+}
+td.gn-lineminus {
+    color: darkred;
+    background-color: #fee;
+}
+td.gn-linenone {
+    color: gray;
+}
+td.gn-linestr {
+    font-family: 'Source Code Pro', monospace;
+    font-size: smaller;
+}
+span.gn-sp {
+    color: #ccc;
+}</style>
+</head>
+<body>
+  <div class="gn-header">
+    <div class="gn-auth">
+$from committed <a href="https://github.com/$repo/commit/$sha">$sha</a><br>
+to $branch on $date
+    </div>
+    <div class="gn-log">$log</div>
+    <div class="gn-stat">
+$stat
+    </div>
+  </div>
+  <div class="gn-diff">
+$diff
+  </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+# action.yml
+name: 'git-notifier'
+description: 'Send commit emails for a repo using git-nofitier'
+branding:
+  icon: 'mail'
+  color: 'silver'
+inputs:
+  githubToken:
+    description: 'Needs gist Oauth from https://github.com/settings/tokens'
+    required: true
+  to:
+    description: 'Whom to send the notification emails to'
+    required: true
+  from:
+    description: 'Who to state as sender; git committer email if empty'
+  smtp:
+    description: 'SMTP server to use'
+    default: 'smtp.gmail.com'
+  port:
+    description: 'SMTP server port to use'
+    default: 587
+  login:
+    description: 'SMTP login'
+    required: true
+  password:
+    description: 'SMTP password'
+    required: true
+  template:
+    description: 'HTML email template'
+    default: '/template.html'
+  ignoreMerge:
+    description: 'Set to true if you want to ignore empty merge messages'
+    default: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
