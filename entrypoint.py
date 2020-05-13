@@ -30,7 +30,7 @@ def bump_rev_in_gist_and_get_old_rev(ghsession, repo, ref, newrev):
     """
     Updates the revision stored in the Gist for this ref.
     """
-    gistname = "{}-lastrev.txt".format(ref)
+    gistname = "{}-lastrev.txt".format(ref.replace('/', '@'))
     gistdescr = "GitNotifier action info for {}/{}"\
         .format(repo, environ['GITHUB_WORKFLOW'])
     print("::debug file={}:: gistname='{}' gistdescr='{}'"
@@ -297,17 +297,19 @@ def get_patch(repo, ref, rev):
             break
     substdiff += '</div>\n'
     subst['diff'] = substdiff
-    return (patch_set.header['title'], template.substitute(subst))
+    return (patch_set.header['title'], patch_set.header['from'], template.substitute(subst))
 
 
-def send_html(subject, body):
+def send_html(subject, sender, body):
     """
     Email the diff.
     """
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
-    message["From"] = environ['INPUT_FROM']
+    message["From"] = sender
     message["To"] = environ['INPUT_TO']
+    # Keep post-commit review public, by default:
+    message["ReplyTo"] = message["To"]
     # Turn these into plain/html MIMEText objects
     part1 = MIMEText("Better with HTML!", "plain")
     part2 = MIMEText(body, "html")
@@ -329,39 +331,45 @@ def send_html(subject, body):
             message["From"], message["To"], message.as_string()
         )
 
-def format_subject(subject):
+def format_subject(reponame, subject):
     """
     Generate a nice looking email subject.
     """
-    return '[' + REPOSITORYNAME.split('/')[1] + '] ' + subject
+    return '[' + reponame.split('/')[1] + '] ' + subject
 
-REPOSITORYNAME = environ['GITHUB_REPOSITORY']
-REF = environ['GITHUB_REF']
-REF = REF.replace('/', '@')
-NEWREV = environ['GITHUB_SHA']
-OLDREV = ""
+def main():
+    """
+    Grab the commits we need to notify about, format each patch, and send email.
+    """
+    repo_name = environ['GITHUB_REPOSITORY']
+    ref = environ['GITHUB_REF']
+    newrev = environ['GITHUB_SHA']
+    oldrev = ""
 
-try:
-    GH = get_github()
-    print("::debug file={}:: GH='{}'".format(__file__, str(GH)))
-    OLDREV = bump_rev_in_gist_and_get_old_rev(GH, REPOSITORYNAME, REF, NEWREV)
-    print("::debug file={}:: OLDREV='{}'".format(__file__, str(OLDREV)))
-    if OLDREV == NEWREV:
-        print("warning:: file={}:: Notification was already sent for the \"new\" commit {}!\n"
-              "Giving up happily."
-              .format(__file__, NEWREV))
-        exit(0)
-    REPOSITORY = GH.repository(REPOSITORYNAME.split('/')[0], REPOSITORYNAME.split('/')[1])
-    print("::debug file={}:: REPOSITORY='{}'".format(__file__, str(REPOSITORY)))
-    REVS = collect_revs(REPOSITORY, OLDREV, NEWREV)
-    print("::debug file={}:: REVS='{}'".format(__file__, str(REVS)))
-except GitHubError as error:
-    print("error:: file={}:: Github error:\n{}".format(__file__, error.errors))
-    exit(1)
+    try:
+        github = get_github()
+        print("::debug file={}:: GH='{}'".format(__file__, str(github)))
+        oldrev = bump_rev_in_gist_and_get_old_rev(github, repo_name, ref, newrev)
+        print("::debug file={}:: OLDREV='{}'".format(__file__, str(oldrev)))
+        if oldrev == newrev:
+            print("warning:: file={}:: Notification was already sent for the \"new\" commit {}!\n"
+                  "Giving up happily."
+                  .format(__file__, newrev))
+            exit(0)
+        repository = github.repository(repo_name.split('/')[0], repo_name.split('/')[1])
+        print("::debug file={}:: REPOSITORY='{}'".format(__file__, str(repository)))
+        revs = collect_revs(repository, oldrev, newrev)
+        print("::debug file={}:: REVS='{}'".format(__file__, str(revs)))
+    except GitHubError as error:
+        print("error:: file={}:: Github error:\n{}".format(__file__, error.errors))
+        exit(1)
 
-for REV in REVS:
-    (title, html) = get_patch(REPOSITORYNAME, environ['GITHUB_REF'], REV)
-    #with open("sample.html", "w") as outfile:
-    #    outfile.write('<!DOCTYPE html>\n' + html)
-    subj = format_subject(title)
-    send_html(subj, html)
+    for rev in revs:
+        (title, sender, htmlsrc) = get_patch(repo_name, ref, rev)
+        #with open("sample.html", "w") as outfile:
+        #    outfile.write('<!DOCTYPE html>\n' + html)
+        subj = format_subject(repo_name, title)
+        send_html(subj, sender, htmlsrc)
+
+if __name__ == "__main__":
+    main()
