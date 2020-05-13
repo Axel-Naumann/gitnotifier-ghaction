@@ -116,7 +116,7 @@ class ParsedPatch:
 
         tag = 'log'
         for line in lines[startline:]:
-            if not line:
+            if tag == 'stat' and not line:
                 tag = 'diff'
                 continue
             if tag == 'log' and line[0:3] == '---':
