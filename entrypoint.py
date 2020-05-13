@@ -13,7 +13,7 @@ import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from github3 import login, GitHubError
-from unidiff import PatchSet, PatchedFile
+from unidiff import PatchSet, PatchedFile, Constants
 
 
 def get_github():
@@ -75,7 +75,7 @@ def collect_revs(repo, oldrev, newrev):
     while True:
         revs.append(rev)
         commit = commit.parents
-        if type(commit) == list:
+        if isinstance(commit) == list:
             commit = commit[0] # FIXME: handle multiple parents!
         rev = commit.sha
         if len(revs) > 100:
@@ -192,7 +192,13 @@ def format_line(line):
     """
     escline = html.escape(str(line.value))
     escline = format_spaces(escline)
-    linetypename = {'+' : 'plus', '-' : 'minus', ' ' : 'none'}
+    linetypename = {
+        Constants.LINE_TYPE_ADDED : 'plus',
+        Constants.LINE_TYPE_REMOVED : 'minus',
+        Constants.LINE_TYPE_CONTEXT : 'none',
+        Constants.LINE_TYPE_EMPTY: 'none',
+        Constants.LINE_TYPE_NO_NEWLINE: 'nnaeof'
+    }
     substdiff = '    <tr class="gn-line">\n'\
         '      <td class="gn-slineno">'\
         + (html.escape(str(line.source_line_no)) if line.source_line_no else '')\
