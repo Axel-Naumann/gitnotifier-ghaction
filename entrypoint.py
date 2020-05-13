@@ -13,7 +13,7 @@ import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from github3 import login, GitHubError
-from unidiff import PatchSet, PatchedFile, Constants
+from unidiff import PatchSet, PatchedFile, constants
 
 
 def get_github():
@@ -193,11 +193,11 @@ def format_line(line):
     escline = html.escape(str(line.value))
     escline = format_spaces(escline)
     linetypename = {
-        Constants.LINE_TYPE_ADDED : 'plus',
-        Constants.LINE_TYPE_REMOVED : 'minus',
-        Constants.LINE_TYPE_CONTEXT : 'none',
-        Constants.LINE_TYPE_EMPTY: 'none',
-        Constants.LINE_TYPE_NO_NEWLINE: 'nnaeof'
+        constants.LINE_TYPE_ADDED : 'plus',
+        constants.LINE_TYPE_REMOVED : 'minus',
+        constants.LINE_TYPE_CONTEXT : 'none',
+        constants.LINE_TYPE_EMPTY: 'none',
+        constants.LINE_TYPE_NO_NEWLINE: 'nnaeof'
     }
     substdiff = '    <tr class="gn-line">\n'\
         '      <td class="gn-slineno">'\
