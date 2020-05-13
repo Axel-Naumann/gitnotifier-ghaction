@@ -300,16 +300,16 @@ def get_patch(repo, ref, rev):
     return (patch_set.header['title'], patch_set.header['from'], template.substitute(subst))
 
 
-def send_html(subject, sender, body):
+def send_html(subject, author, body):
     """
     Email the diff.
     """
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
-    message["From"] = sender
+    message["From"] = environ['INPUT_FROM']
     message["To"] = environ['INPUT_TO']
     # Keep post-commit review public, by default:
-    message["ReplyTo"] = message["To"]
+    message["Reply-to"] = author
     # Turn these into plain/html MIMEText objects
     part1 = MIMEText("Better with HTML!", "plain")
     part2 = MIMEText(body, "html")
@@ -365,11 +365,11 @@ def main():
         exit(1)
 
     for rev in revs:
-        (title, sender, htmlsrc) = get_patch(repo_name, ref, rev)
+        (title, author, htmlsrc) = get_patch(repo_name, ref, rev)
         #with open("sample.html", "w") as outfile:
         #    outfile.write('<!DOCTYPE html>\n' + html)
         subj = format_subject(repo_name, title)
-        send_html(subj, sender, htmlsrc)
+        send_html(subj, author, htmlsrc)
 
 if __name__ == "__main__":
     main()
