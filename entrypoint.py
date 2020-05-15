@@ -221,7 +221,7 @@ def format_hunk(hunk):
     substdiff = '    <table class="gn-hunk">\n'
     for line in hunk:
         substdiff += format_line(line)
-        if len(substdiff) > 5000:
+        if len(substdiff) > 10000:
             substdiff += '<tr><td>...</td><td></td><td></td><td></td></tr>\n'
             break
     substdiff += '    </table>\n'
@@ -239,9 +239,11 @@ def format_file(file, fileno):
     if vars(PatchedFile).get('is_binary_file') and file.is_binary_file:
         substdiff += '    <div class="gn-binary">(binary file)</div>\n'
     else:
+        hunkno = 0
         for hunk in file:
             substdiff += format_hunk(hunk)
-            if len(substdiff) > 5000:
+            hunkno += 1
+            if hunkno > 10:
                 substdiff += '<div>... (too many hunks.)</div>\n'
                 break
     substdiff += '  </div>\n'
