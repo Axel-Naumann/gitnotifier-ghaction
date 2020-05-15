@@ -272,8 +272,16 @@ def get_patch(repo, ref, rev):
     print("::debug file={}:: template='{}'".format(__file__, template_src))
 
     template = Template(template_src)
+    sha = patch_set.header['intro'].split(' ')[0],
     subst = {
-        'sha' : patch_set.header['intro'].split(' ')[0],
+        'sha' : sha
+        'sha4' : sha[:4]
+        'sha6' : sha[:6]
+        'sha8' : sha[:8]
+        'sha10' : sha[:10]
+        'sha12' : sha[:12]
+        'sha14' : sha[:14]
+        'sha16' : sha[:16]
         'title': patch_set.header['title'],
         'from': patch_set.header['from'],
         'date': patch_set.header['date'],

@@ -3,12 +3,11 @@
     <meta charset="utf-8"/>
 <style type="text/css">
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+body {
+    font-size:smaller;
+}
 div.gn-header{
     padding: 0.5em 0.5em;
-    background-color: #fffadf;
-}
-td.gn-label {
-    min-width: 5em;
 }
 .gn-header table {
     border-collapse: collapse;
@@ -16,17 +15,18 @@ td.gn-label {
 .gn-header tr td {
     padding: 0;
 }
-div.gn-title {
-    font-weight: bold;
-    padding-bottom: 0.3em;
-    margin-bottom: 0.3em;
+div.gn-log {
+    background-color: #fffadf;
+    padding: 0.5em 0em 0.5em 0.5em;
 }
 div.gn-stat {
+    background-color: #fffadf;
     color: gray;
     font-size: small;
-    margin: 0.5em 0em 1em;
+    padding: 0.5em 0em 1em 1em;
 }
 table.gn-statfile td {
+    font-size: small;
     padding: 0 0.5em;
 }
 table.gn-statfile {
@@ -51,8 +51,10 @@ div.gn-filediff {
 }
 div.gn-filename {
     font-family: 'Source Code Pro', monospace;
-    padding-top: 1em;
-    padding-left: 0.2em;
+    padding: 0.5em;
+    color: black;
+    font-weight: bold;
+    background-color: #e7e7ff;
 }
 table.gn-hunk {
     margin: 0.2em;
@@ -102,12 +104,13 @@ td.gn-linestr {
 }
 span.gn-sp {
     color: #ccc;
-}</style>
+}
+</style>
 </head>
 <body>
   <div class="gn-header">
     <div class="gn-auth">
-$from committed <a href="https://github.com/$repo/commit/$sha">$sha</a><br>
+$from committed <a href="https://github.com/$repo/commit/$sha">$sha8</a><br>
 to $branch on $date
     </div>
     <div class="gn-log">$log</div>
