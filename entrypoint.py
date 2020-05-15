@@ -333,11 +333,12 @@ def send_html(subject, author, body):
             message["From"], message["To"], message.as_string()
         )
 
-def format_subject(reponame, subject):
+def format_subject(reponame, ref, subject):
     """
     Generate a nice looking email subject.
     """
-    return '[' + reponame.split('/')[1] + '] ' + subject
+    branch = ref.replace("refs/heads/", "")
+    return '[{}:{}] {}'.format(reponame.split('/')[1], branch,  subject)
 
 def main():
     """
@@ -370,7 +371,7 @@ def main():
         (title, author, htmlsrc) = get_patch(repo_name, ref, rev)
         #with open("sample.html", "w") as outfile:
         #    outfile.write('<!DOCTYPE html>\n' + html)
-        subj = format_subject(repo_name, title)
+        subj = format_subject(repo_name, ref, title)
         send_html(subj, author, htmlsrc)
 
 if __name__ == "__main__":
