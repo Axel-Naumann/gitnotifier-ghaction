@@ -274,14 +274,14 @@ def get_patch(repo, ref, rev):
     template = Template(template_src)
     sha = patch_set.header['intro'].split(' ')[0],
     subst = {
-        'sha' : sha,
-        'sha4' : sha[:4],
-        'sha6' : sha[:6],
-        'sha8' : sha[:8],
-        'sha10' : sha[:10],
-        'sha12' : sha[:12],
-        'sha14' : sha[:14],
-        'sha16' : sha[:16],
+        'sha': sha,
+        'sha4': sha[:4],
+        'sha6': sha[:6],
+        'sha8': sha[:8],
+        'sha10': sha[:10],
+        'sha12': sha[:12],
+        'sha14': sha[:14],
+        'sha16': sha[:16],
         'title': patch_set.header['title'],
         'from': patch_set.header['from'],
         'date': patch_set.header['date'],
@@ -292,6 +292,7 @@ def get_patch(repo, ref, rev):
         'diff': ''
     }
     for key in subst:
+        print("::debug file={}:: html esc '{}':'{}'".format(__file__, key, str(subst[key])))
         subst[key] = html.escape(subst[key])
     subst['stat'] = format_stat(subst['stat'])
     subst['log'] = subst['log'].replace('\n', '<br>')
