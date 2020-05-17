@@ -272,7 +272,7 @@ def get_patch(repo, ref, rev):
     print("::debug file={}:: template='{}'".format(__file__, template_src))
 
     template = Template(template_src)
-    sha = patch_set.header['intro'].split(' ')[0],
+    sha = patch_set.header['intro'].split(' ')[0]
     subst = {
         'sha': sha,
         'sha4': sha[:4],
