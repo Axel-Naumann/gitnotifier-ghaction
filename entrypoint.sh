@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-if [[ "x$INPUT_GITHUBTOKEN" == "x" ]] ; then
+if test "x$INPUT_GITHUBTOKEN" == "x" ; then
     echo "debug file={entrypoint.sh}:: No 'INPUT_GITHUBTOKEN' parameter; assuming this is a fork for which no email notification is configured. Exiting gracefully."
     exit
 fi
