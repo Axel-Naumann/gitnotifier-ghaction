@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
-if [[ "x$INPUT_PASSWORD" == "x" ]] ; then
-    echo "debug file={entrypoint.sh}:: No 'INPUT_PASSWORD' parameter; assuming this is a fork for which no email notification is configured. Exiting gracefully."
+if [[ "x$INPUT_GITHUBTOKEN" == "x" ]] ; then
+    echo "debug file={entrypoint.sh}:: No 'INPUT_GITHUBTOKEN' parameter; assuming this is a fork for which no email notification is configured. Exiting gracefully."
     exit
 fi
 

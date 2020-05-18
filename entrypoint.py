@@ -360,6 +360,11 @@ def main():
 
     try:
         github = get_github()
+        if not github:
+            print("error:: file={}:: Cannot create GitHub session as user {}!"
+                  .format(__file__, environ['GITHUB_ACTOR']))
+            exit(1)
+
         print("::debug file={}:: GH='{}'".format(__file__, str(github)))
         oldrev = bump_rev_in_gist_and_get_old_rev(github, repo_name, ref, newrev)
         print("::debug file={}:: OLDREV='{}'".format(__file__, str(oldrev)))
