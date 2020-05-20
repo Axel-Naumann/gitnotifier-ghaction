@@ -67,7 +67,10 @@ def collect_revs(repo, oldrev, newrev):
     """
     Return the list of revs after oldrev up to (and including) newrev.
     """
+    print("::debug file={}:: starting with rev '{}', oldrev is '{}'"
+          .format(__file__, newrev, oldrev))
     if oldrev != newrev + '~1':
+        print("::debug file={}:: oldrev has ~1, returning only newrev.")
         return [newrev]
     revs = []
     rev = newrev
@@ -76,13 +79,18 @@ def collect_revs(repo, oldrev, newrev):
         revs.append(rev)
         commit = commit.parents
         if isinstance(commit) == list:
+            print("::debug file={}:: multiple parent revs for '{}'"
+                  .format(__file__, rev))
             commit = commit[0] # FIXME: handle multiple parents!
         rev = commit.sha
+        print("::debug file={}:: previous rev is '{}'"
+              .format(__file__, rev))
         if len(revs) > 100:
             print("warning:: file={}:: more than {} commits between '{}' and '{}'!\n"
                   "Only notifying on the first {} commits."
                   .format(__file__, len(revs), oldrev, newrev, len(revs)))
             break
+    return revs
 
 
 class ParsedPatch:
