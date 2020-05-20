@@ -78,7 +78,7 @@ def collect_revs(repo, oldrev, newrev):
     while True:
         revs.append(rev)
         commit = commit.parents
-        if isinstance(commit) == list:
+        if isinstance(commit, list):
             print("::debug file={}:: multiple parent revs for '{}'"
                   .format(__file__, rev))
             commit = commit[0] # FIXME: handle multiple parents!
