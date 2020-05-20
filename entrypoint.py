@@ -82,7 +82,7 @@ def collect_revs(repo, oldrev, newrev):
             print("::debug file={}:: multiple parent revs for '{}'"
                   .format(__file__, rev))
             commit = commit[0] # FIXME: handle multiple parents!
-        rev = commit.sha
+        rev = commit["sha"]
         print("::debug file={}:: previous rev is '{}'"
               .format(__file__, rev))
         if len(revs) > 100:
