@@ -57,7 +57,7 @@ def bump_rev_in_gist_and_get_old_rev(ghsession, repo, ref, newrev):
         print("::debug file={}:: updating gist='{}'".format(__file__, str(type(gist))))
         files = gist.files
         if gistname in files:
-            oldrev = files[gistname].content
+            oldrev = files[gistname].content()
         files[gistname] = {'content': newrev}
         gist.edit(gistdescr, files)
     return oldrev
@@ -69,7 +69,7 @@ def collect_revs(repo, oldrev, newrev):
     """
     print("::debug file={}:: starting with rev '{}', oldrev is '{}'"
           .format(__file__, newrev, oldrev))
-    if oldrev != newrev + '~1':
+    if oldrev == newrev + '~1':
         print("::debug file={}:: oldrev has ~1, returning only newrev.")
         return [newrev]
     revs = []
