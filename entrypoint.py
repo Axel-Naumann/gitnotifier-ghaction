@@ -60,7 +60,7 @@ def bump_rev_in_gist_and_get_old_rev(ghsession, repo, ref, newrev):
             oldrev = files[gistname].content()
         files[gistname] = {'content': newrev}
         gist.edit(gistdescr, files)
-    return oldrev
+    return oldrev.decode('utf-8')
 
 
 def collect_revs(repo, oldrev, newrev):
