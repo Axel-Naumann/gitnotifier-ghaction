@@ -167,11 +167,15 @@ def format_stat(stat):
             return ret
         (file, mod) = line.split(' | ')
         ret += '<tr><td><a href="#f{}">'.format(fileno) + file + '</a></td><td>'
-        (num, plusminus) = mod.strip().split(' ')
-        pluses = plusminus.count('+')
-        minuses = plusminus.count('-')
-        ret += ' ' + str(num) + '</td><td><span class="gn-statadd">' + '+' * pluses\
-            + '</span><span class="gn-statrm">' + '-' * minuses + '</span></td></tr>'
+        try:
+            (num, plusminus) = mod.strip().split(' ')
+            pluses = plusminus.count('+')
+            minuses = plusminus.count('-')
+            ret += ' ' + str(num) + '</td><td><span class="gn-statadd">' + '+' * pluses\
+                + '</span><span class="gn-statrm">' + '-' * minuses + '</span></td></tr>'
+        except:
+            # can happen for binary files: "Bin 8146 -> 0 bytes".
+            ret += ' ' + mod + '</td><td></td></tr>'
         fileno += 1
     return '</table>' + ret
 
