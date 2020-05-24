@@ -361,12 +361,15 @@ def send_html(subject, author, body):
             message["From"], message["To"], message.as_string()
         )
 
-def format_subject(reponame, ref, subject):
+def format_subject(reponame, ref, subject, revno, numrevs):
     """
     Generate a nice looking email subject.
     """
     branch = ref.replace("refs/heads/", "")
-    return '[{}:{}] {}'.format(reponame.split('/')[1], branch,  subject)
+    idx =  ''
+    if  numrevs > 1:
+        idx = ' {}/{}'.format(str(revno + 1), str(numrevs))
+    return '[{}:{}{}] {}'.format(reponame.split('/')[1], branch, idx, subject)
 
 def main():
     """
@@ -400,12 +403,14 @@ def main():
         print("error:: file={}:: Github error:\n{}".format(__file__, error.errors))
         exit(1)
 
+    revno = 0
     for rev in revs:
         (title, author, htmlsrc) = get_patch(repo_name, ref, rev)
         #with open("sample.html", "w") as outfile:
         #    outfile.write('<!DOCTYPE html>\n' + html)
-        subj = format_subject(repo_name, ref, title)
+        subj = format_subject(repo_name, ref, title, revno, len(revs))
         send_html(subj, author, htmlsrc)
+        revno += 1
 
 if __name__ == "__main__":
     main()
