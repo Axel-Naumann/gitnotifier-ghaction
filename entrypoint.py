@@ -59,7 +59,7 @@ def bump_rev_in_gist_and_get_old_rev(ghsession, repo, ref, newrev):
             oldrev = files[gistname].content()
         files_out = {}
         for k in files:
-            files_out[k.decode('utf-8')] = {
+            files_out[k] = {
                 'content': files[k].content().decode('utf-8')
             }
         files_out[gistname] = {'content': newrev}
