@@ -16,14 +16,13 @@ from github3 import login, GitHubError
 from unidiff import PatchSet, PatchedFile, constants
 
 
-def get_github():
+def get_github(repo, token):
     """
     Create the GitHub object.
     """
-    user = environ['GITHUB_ACTOR']
+    #user = environ['GITHUB_ACTOR']
     # get one at https://github.com/settings/tokens/new - needs gist auth
-    token = environ['INPUT_GITHUBTOKEN']
-    return login(user, token)
+    return login(repo, token)
 
 
 def bump_rev_in_gist_and_get_old_rev(ghsession, repo, ref, newrev):
@@ -382,7 +381,7 @@ def main():
     oldrev = ""
 
     try:
-        github = get_github()
+        github = get_github(repo_name, environ['INPUT_GITHUBTOKEN'])
         if not github:
             print("error:: file={}:: Cannot create GitHub session as user {}!"
                   .format(__file__, environ['GITHUB_ACTOR']))
