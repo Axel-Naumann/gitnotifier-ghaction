@@ -150,9 +150,10 @@ class ParsedPatch:
 
     def __init__(self, patch):
         remain = self._parse_header(patch)
-        print("::debug file={}:: header:'{}'"
-              .format(__file__, json.dumps(self.header, indent=2)))
-        self._parse_diff(remain)
+        print("::debug file={}:: header:'{}' remain:'{}'"
+              .format(__file__, json.dumps(self.header, indent=2), remain))
+        if remain.count('\n') > 3:
+            self._parse_diff(remain)
         print("::debug file={}:: diff:'{}'"
               .format(__file__, str(self.diff)))
 
